@@ -1,0 +1,6 @@
+<mat-card class="msg-card">
+  <mat-form-field class="msg-form">
+    <textarea mat-autosize matInput placeholder="Your Message" class="msg" #message></textarea>
+  </mat-form-field>
+  <button mat-raised-button color="warn" class="msg-button" (click)="sendMessage(message)">SEND</button>
+</mat-card>
