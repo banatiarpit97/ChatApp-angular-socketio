@@ -1,6 +1,7 @@
-<mat-card class="msg-card">
-  <mat-form-field class="msg-form">
-    <textarea mat-autosize matInput placeholder="Your Message" class="msg" #message></textarea>
+<mat-card class="msg-card" [ngClass]="{'sending-disabled': !ws.pairingStatus}">
+  <mat-form-field class="msg-form" *ngIf="ws.pairingStatus">
+    <textarea mat-autosize matInput placeholder="Your Message" class="msg" [(ngModel)]="message"></textarea>
   </mat-form-field>
-  <button mat-raised-button color="warn" class="msg-button" (click)="sendMessage(message)">SEND</button>
+  <button mat-raised-button color="warn" class="msg-button" (click)="sendMessage(message)" *ngIf="ws.pairingStatus">SEND</button>
+  <p class="disabled-msg" *ngIf="!ws.pairingStatus">You can start sending messages after you are connected to a partner.</p>
 </mat-card>

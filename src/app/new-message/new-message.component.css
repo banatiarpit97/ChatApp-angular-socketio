@@ -8,15 +8,26 @@
     padding-top: 0%;
     height: 10%;
     padding-bottom: 0.8%;
+    box-shadow: 0 -2px 4px rgba(0,0,0,.2);
 }
 .msg-form{
     width: 80%;
     padding: 1%;
 }
-
 .msg-button{
     font-weight: bold;
     width: 12%;
     height: 38px;
     margin-left: 4%;
+}
+.sending-disabled{
+    height: 7% !important;
+    background-color: #cbcaca !important;
+}
+.disabled-msg{
+    color: #2299a2;
+    font-size: 1.5em;
+    text-align: center;
+    vertical-align: initial;
+    line-height: 49px;
 }

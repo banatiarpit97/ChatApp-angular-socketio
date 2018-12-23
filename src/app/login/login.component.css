@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css?family=Merriweather');
+*{
+    font-family: 'Merriweather', serif;
+}
+#background{
+    background: url('./../../assets/login-background.jpg') center center no-repeat fixed;
+    background-size: cover;
+    height: 100%;
+    width:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#login-form{
+    width: 40%;
+    height: 55%;
+    background: rgba(16, 16, 16, 0.8);
+    border-radius: 3px;
+}
+.container{
+    width: 80%;
+    height: 88%;
+    margin: 6% 10%;
+}
+#login-form h1{
+    color: white;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+label{
+    display: block;
+    color: white;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+input{
+    width: 100%;
+    height: 40px;
+    border: 2px solid #cdc9c9;
+    box-sizing: border-box;
+    padding-left: 10px;
+    font-size: 22px;
+    margin-top: 10px;
+    background-color: transparent;
+    color: white;
+}
+.gender, .interested{
+    margin-top: 30px;
+}
+.gender label, .interested label{
+    margin-bottom: 10px;
+}
+mat-radio-button{
+    margin-right: 30px;
+    color: white;
+}
+.button-row{
+    margin-top: 25px;
+    text-align: center;
+}
+.button-row button{
+    text-transform: uppercase;
+}

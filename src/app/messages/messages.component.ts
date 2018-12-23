@@ -8,14 +8,17 @@ import { ChatService } from '../services/chat.service';
 })
 export class MessagesComponent implements OnInit {
   messages = [];
-  constructor(private chat: ChatService) { }
+  colors = ['green', '#2255aa', '#d13131', '#c07e1c'];
+  randomNumber = Math.floor(Math.random() * 4);
+  constructor(private chat: ChatService) {
+    console.log(this.randomNumber);
+
+  }
 
   ngOnInit() {
     this.chat.messages.subscribe(msg => {
       // console.log(8);
       this.messages.push(msg);
-        console.log(this.messages);
-      // console.log(msg);
     });
   }
 
