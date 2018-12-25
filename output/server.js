@@ -31,23 +31,30 @@ class ChatRoom{
         this[availableSlot].name = credentials.name;
         this[availableSlot].gender = credentials.gender;
         this[availableSlot].interested = credentials.interested;
+        this[availableSlot].image = credentials.image;
+        this[availableSlot].description = credentials.description;
         if (availableSlot == "firstUser") {
             unpairedUsers.push(this);
-            this.firstUser.socket.emit("pairing-info", JSON.stringify({ 
+            this.firstUser.socket.emit("partner-information", JSON.stringify({ 
                 status:false,    
             }));
         }
         else if (availableSlot == "secondUser") {
-            // console.log(unpairedUsers.indexOf(this));
-            let names = [, ];
-            console.log('names', names)
-            this.firstUser.socket.emit("pairing-info", JSON.stringify({
-                name: this.secondUser.name,                
+            this.firstUser.socket.emit("partner-information", JSON.stringify({
                 status: true,                
+                name: this.secondUser.name,
+                gender: this.secondUser.gender,
+                interested: this.secondUser.interested,
+                image: this.secondUser.image,
+                description: this.secondUser.description,
             }));
-            this.secondUser.socket.emit("pairing-info", JSON.stringify({
+            this.secondUser.socket.emit("partner-information", JSON.stringify({
                 status: true,
-                name: this.firstUser.name
+                name: this.firstUser.name,
+                gender: this.firstUser.gender,
+                interested: this.firstUser.interested,
+                image: this.firstUser.image,
+                description: this.firstUser.description,
             }));
             unpairedUsers.splice(unpairedUsers.indexOf(this), 1);
             pairedUsers.push(this);
@@ -182,7 +189,7 @@ function deleteUser(socket){
             }
         }
         if (index >= 0) {
-            pairedUsers[index].firstUser.socket.emit('partner-disconnect', true);
+        pairedUsers[index].firstUser.socket.emit('partner-information', JSON.stringify({status: false}));
             pairedUsers[index].secondUser = null;
             unpairedUsers.push(pairedUsers[index]);
             pairedUsers.splice(index, 1);

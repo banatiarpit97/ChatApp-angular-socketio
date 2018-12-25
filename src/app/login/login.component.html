@@ -3,9 +3,17 @@
     <div class="container">
       <h1>Login To Chat</h1>
       <form [formGroup]="loginForm" (ngSubmit)="login()">
-        <div>
+        <div class="img-placeholder">
+          <img src="{{noteImage}}" (click)="image.click()" >
+        </div>
+        <input type="file" #image accept="image/*" (change)="imgUpload($event)">
+        <div class="name">
           <label for="name">Name</label>
           <input type="text" name="name" id="name" formControlName="name">
+        </div>
+        <div class="description">
+          <label for="description">Anything interesting about you</label>
+          <textarea name="description" id="description" formControlName="description"></textarea>
         </div>
 
         <div class="gender">

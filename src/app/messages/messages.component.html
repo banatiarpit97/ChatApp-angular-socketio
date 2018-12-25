@@ -1,5 +1,14 @@
 <mat-sidenav-container class="example-container">
-  <mat-sidenav mode="side" opened class="sidenav">Sidenav content</mat-sidenav>
+  <mat-sidenav mode="side" opened class="sidenav" *ngIf="ws.pairingStatus" >
+    <img src={{ws.partner_image}} class="partner-image">
+    <div class="partner-info">
+      <h1 class="name">{{ws.partner_name}}</h1>
+      <p class="description">{{ws.partner_description}}</p>
+      <p class="gender">Gender : <span class="capitalize">{{ws.partner_gender}}</span></p>
+      <p class="Interested">Interested in : <span class="capitalize">{{ws.partner_interested}}</span></p>
+    </div>
+    <button class="logout" (click)="logout()">Leave Chat Room</button>
+  </mat-sidenav>
   <mat-sidenav-content>
     <div style="width:100%;height:3%;"></div>
     

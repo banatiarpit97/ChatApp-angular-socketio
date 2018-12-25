@@ -80,6 +80,37 @@
 .topmargin{
     height: 30%;
 }
+.partner-image{
+    width: 100%;
+    height: 50%;
+}
+.partner-info{
+    width: 80%;
+    margin: 5% 10%;
+}
+.logout{
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+    background-color: red;
+    color: white;
+    padding: 5%;
+    border: 0;
+    font-size: 1.5em;
+    font-weight: bold;
+    cursor: pointer;
+}
+.name{
+    letter-spacing: 2px;
+    margin-bottom: 0;
+}
+.description{
+    color: grey;
+    margin-top: 0;
+}
+.capitalize{
+    text-transform: capitalize;
+}
 
 
 
@@ -100,9 +131,6 @@
     width: 30%;
 }
 
-mat-sidenav-content{
-    margin-left: 30% !important;
-}
 
 mat-card{
     background-color: white;

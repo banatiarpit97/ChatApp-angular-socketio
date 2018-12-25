@@ -20,14 +20,17 @@
     height: 38px;
     margin-left: 4%;
 }
-.sending-disabled{
-    height: 7% !important;
+.msg-card-disabled{
+    height: 4% !important;
     background-color: #cbcaca !important;
+    bottom: 0;
+    position: fixed;
+    width: 100%;
 }
 .disabled-msg{
     color: #2299a2;
     font-size: 1.5em;
     text-align: center;
     vertical-align: initial;
-    line-height: 49px;
+    line-height: 30px;
 }
