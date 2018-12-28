@@ -4,7 +4,7 @@
       <h1>Login To Chat</h1>
       <form [formGroup]="loginForm" (ngSubmit)="login()">
         <div class="img-placeholder">
-          <img src="{{noteImage}}" (click)="image.click()" >
+          <img src="{{myImage}}" (click)="image.click()" >
         </div>
         <input type="file" #image accept="image/*" (change)="imgUpload($event)">
         <div class="name">

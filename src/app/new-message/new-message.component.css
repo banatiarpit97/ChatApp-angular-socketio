@@ -6,19 +6,28 @@
     background-color: white;
     border-radius: 0;
     padding-top: 0%;
-    height: 10%;
-    padding-bottom: 0.8%;
+    /* height: 10%; */
+    padding-bottom: 0;
     box-shadow: 0 -2px 4px rgba(0,0,0,.2);
+    max-height: 20%;
+}
+textarea{
+    overflow: hidden !important;
 }
 .msg-form{
     width: 80%;
     padding: 1%;
+    float: left;
+    max-height: 100px;
+    overflow-x: hidden;
+    padding-bottom: 0;
 }
 .msg-button{
     font-weight: bold;
     width: 12%;
     height: 38px;
     margin-left: 4%;
+    margin-top: 2%;
 }
 .msg-card-disabled{
     height: 4% !important;

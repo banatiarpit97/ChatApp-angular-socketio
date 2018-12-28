@@ -33,19 +33,15 @@ export class LoginComponent implements OnInit {
     this.ws.description = this.loginForm.value.description;
     this.ws.image = this.loginForm.value.image;
     this.chatService.init();
-    console.log(this.loginForm.value);
   }
 
   imgUpload(e: Event) {
-    // this.editImage = true;
     const file = (e.target as HTMLInputElement).files[0];
     const reader = new FileReader();
     reader.onload = () => {
-      console.log(reader.result);
       this.myImage = reader.result;
       this.loginForm.patchValue({ image: reader.result });
       this.loginForm.get('image').updateValueAndValidity();
-      // (e.target as HTMLInputElement).files = null;
     };
     reader.readAsDataURL(file);
   }

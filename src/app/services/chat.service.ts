@@ -19,7 +19,6 @@ export class ChatService {
       .connect()
       .map((response: any): any => {
         // console.log(7);
-        // console.log(response);
         return response;
       });
   }

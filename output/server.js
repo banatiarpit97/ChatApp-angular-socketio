@@ -132,6 +132,8 @@ io.on('connection', (socket) => {
     users.push(socket.id);
     socket.on('message', (data) => {
         data = JSON.parse(data);
+        console.log(data.text);
+        console.log(data.text.indexOf('\n'));
         data.from = socket.id;
         data.to = 'all';
         // console.log('aa', pairedUsers)
