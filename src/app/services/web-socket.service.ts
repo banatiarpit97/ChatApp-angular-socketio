@@ -47,6 +47,7 @@ export class WebSocketService {
           gender: this.gender,
           interested: this.interested,
         }));
+        console.log('image', this.image);
         obs.next({from: 'admin', text: 'Welcome to Chat App'});
       });
       // this.socket.on('pairing-info', (data) => {
@@ -109,11 +110,14 @@ export class WebSocketService {
           // if (data.status) {
             if (data.image) {
               this.partner_image = data.image;
+            } else {
+              this.partner_image = './../assets/images/user-placeholder.jpeg';
             }
             this.partner_name = data.name;
             this.partner_description = data.description;
             this.partner_gender = data.gender;
             this.partner_interested = data.interested;
+            console.log(this.partner_image);
           // } else {
           //   this.messages.push({ from: 'admin', text: 'Your partner disconnected' });
           //   this.messages.push({ from: 'admin', text: 'Finding you a suitable partner...' });
@@ -131,7 +135,7 @@ export class WebSocketService {
   logout() {
     this.socket.disconnect();
     this.pairingStatus = false;
-    this.partner_image = null;
+    this.partner_image = './../assets/images/user-placeholder.jpeg';
     this.partner_name = null;
     this.partner_description = null;
     this.partner_gender = null;

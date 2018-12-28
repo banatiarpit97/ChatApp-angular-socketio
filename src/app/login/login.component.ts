@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { WebSocketService } from '../services/web-socket.service';
-import { Router } from '@angular/router';
+import { ChatService } from '../services/chat.service';
 
 
 @Component({
@@ -12,8 +12,8 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   gender;
   loginForm;
-  noteImage: any = './assets/images/user-placeholder.jpeg';
-  constructor(fb: FormBuilder, public ws: WebSocketService, private router: Router) {
+  myImage: any = './assets/images/user-placeholder.jpeg';
+  constructor(fb: FormBuilder, public ws: WebSocketService, private chatService: ChatService) {
     this.loginForm = fb.group({
       image: [null],
       name: ['', Validators.required],
@@ -32,7 +32,7 @@ export class LoginComponent implements OnInit {
     this.ws.interested = this.loginForm.value.interested;
     this.ws.description = this.loginForm.value.description;
     this.ws.image = this.loginForm.value.image;
-    this.router.navigate(['/messages']);
+    this.chatService.init();
     console.log(this.loginForm.value);
   }
 
@@ -42,11 +42,11 @@ export class LoginComponent implements OnInit {
     const reader = new FileReader();
     reader.onload = () => {
       console.log(reader.result);
-      this.noteImage = reader.result;
+      this.myImage = reader.result;
       this.loginForm.patchValue({ image: reader.result });
       this.loginForm.get('image').updateValueAndValidity();
+      // (e.target as HTMLInputElement).files = null;
     };
     reader.readAsDataURL(file);
   }
-
 }
