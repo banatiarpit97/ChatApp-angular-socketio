@@ -10,10 +10,6 @@ let io = socketIO(server);
 
 app.use("/", express.static(path.join(__dirname, "angular")));
 
-app.use((req, res) => {
-    res.sendFile(path.join(__dirname, "angular", "index.html"))
-});
-
 let users = [];
 let pairedUsers = [];
 let unpairedUsers = [];
@@ -159,6 +155,9 @@ function deleteUser(socket){
         }
 }
 
+app.use((req, res) => {
+    res.sendFile(path.join(__dirname, "angular", "index.html"))
+});
 
 server.listen(port, () => {
     console.log(`listening on port ${port}`);
