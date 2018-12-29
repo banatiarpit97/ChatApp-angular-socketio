@@ -10,7 +10,7 @@ import { WebSocketService } from '../services/web-socket.service';
 export class NewMessageComponent implements OnInit {
   @Input() partner_name: string;
   message;
-  constructor(private chat: ChatService, private ws: WebSocketService) {
+  constructor(private chat: ChatService, public ws: WebSocketService) {
   }
 
   ngOnInit() { }
