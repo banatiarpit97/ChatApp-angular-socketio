@@ -29,7 +29,7 @@ export class WebSocketService {
   }
 
   connect(): Rx.Subject<MessageEvent> {
-    this.socket = io('http://localhost:3000');
+    this.socket = io('/');
     // console.log(1);
     const observable = new Observable(obs => {
       // console.log(2);
