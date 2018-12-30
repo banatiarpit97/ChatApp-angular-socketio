@@ -3,7 +3,6 @@
     margin-bottom: 20px;
 }
 .mine, .yours{
-    margin-left: 5%;
     padding: 10px;
     max-width: 70%;
     min-width: 75px;
@@ -11,9 +10,11 @@
 }
 .yours{
     float: left;
+    margin-left: 5%;
 }
 .mine{
     float: right;
+    margin-right: 5%;
     background-color: #d7eeb5;
 }
 .msg-sender{

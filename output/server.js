@@ -8,111 +8,141 @@ const app = express();
 let server = http.createServer(app);
 let io = socketIO(server);
 
+let socketIdMap = new Map();
+
 app.use("/", express.static(path.join(__dirname, "angular")));
 
-let users = [];
 let pairedUsers = [];
 let unpairedUsers = [];
+
+class User{
+    constructor(socket, name, gender, interested, image, description){
+        this.socket = socket;
+        this.name = name;
+        this.gender = gender;
+        this.interested = interested;
+        this.image = image;
+        this.description = description;
+    }
+
+    sendPartnerInformation(partner, status) {
+        if (!status) {
+            this.socket.emit('partner-information', JSON.stringify({ status }));
+        }
+        else {
+            this.socket.emit("partner-information", JSON.stringify({
+                status,
+                name: partner.name,
+                gender: partner.gender,
+                interested: partner.interested,
+                image: partner.image,
+                description: partner.description,
+            }));
+        }
+    }
+
+    sendMessage(msg) {
+        this.socket.emit('message', msg);
+    }
+}
+
 class ChatRoom{
     constructor(){
         this.firstUser = null;
         this.secondUser = null;
         this.messages = [];
     }
-    addUser(credentials, socket){
-        let availableSlot;
+
+    addUser(user){
         if (!this.firstUser) {
-            availableSlot = "firstUser";
+            this.firstUser = user;
+            unpairedUsers.push(this);
+            this.firstUser.sendPartnerInformation(null, false)
         }
         else if (!this.secondUser) {
-            availableSlot = "secondUser";
-        }
-        socket.name = credentials.name;
-        this[availableSlot] = {};
-        this[availableSlot].socket = socket;
-        this[availableSlot].name = credentials.name;
-        this[availableSlot].gender = credentials.gender;
-        this[availableSlot].interested = credentials.interested;
-        this[availableSlot].image = credentials.image;
-        this[availableSlot].description = credentials.description;
-        if (availableSlot == "firstUser") {
-            unpairedUsers.push(this);
-            this.firstUser.socket.emit("partner-information", JSON.stringify({ 
-                status:false,    
-            }));
-        }
-        else if (availableSlot == "secondUser") {
-            this.firstUser.socket.emit("partner-information", JSON.stringify({
-                status: true,                
-                name: this.secondUser.name,
-                gender: this.secondUser.gender,
-                interested: this.secondUser.interested,
-                image: this.secondUser.image,
-                description: this.secondUser.description,
-            }));
-            this.secondUser.socket.emit("partner-information", JSON.stringify({
-                status: true,
-                name: this.firstUser.name,
-                gender: this.firstUser.gender,
-                interested: this.firstUser.interested,
-                image: this.firstUser.image,
-                description: this.firstUser.description,
-            }));
+            this.secondUser = user;
+            this.firstUser.sendPartnerInformation(this.secondUser, true);
+            this.secondUser.sendPartnerInformation(this.firstUser, true);
             unpairedUsers.splice(unpairedUsers.indexOf(this), 1);
             pairedUsers.push(this);
         }
+        socketIdMap[user.socket.id] = this;
+        console.log(socketIdMap);
     }
+
+    deleteUser(socketId){
+        if (!this) {
+            return;
+        }
+        if (this.firstUser.socket.id == socketId) {
+            if (!this.secondUser) {
+                removeFromUsersArray(unpairedUsers, this);
+            }
+            else if (this.secondUser) {
+                this.firstUser = this.secondUser;
+                this.secondUser = null;
+                removeFromUsersArray(pairedUsers, this);
+                unpairedUsers.push(this);
+            }
+        }
+        else if (this.secondUser.socket.id == socketId) {
+            this.secondUser = null;
+            removeFromUsersArray(pairedUsers, this);
+            unpairedUsers.push(this);
+        }
+        if (this.firstUser) {
+            this.firstUser.sendPartnerInformation(null, false)
+        }
+    }
+    
     storeMessage(msg){
         this.messages.push(msg);
         if(msg.from == this.firstUser.socket.id){
             msg.from = 'me';
-            this.sendMessage(msg, this.firstUser.socket);
+            this.firstUser.sendMessage(msg);
             msg.from = this.firstUser.socket.name;
-            this.sendMessage(msg, this.secondUser.socket);
+            this.secondUser.sendMessage(msg);
         }
         else{
             msg.from = 'me';
-            this.sendMessage(msg, this.secondUser.socket);
+            this.secondUser.sendMessage(msg);
             msg.from = this.secondUser.socket.name;
-            this.sendMessage(msg, this.firstUser.socket);            
+            this.firstUser.sendMessage(msg);            
         }
     }
-    sendMessage(msg, socket){
-        socket.emit('message', msg);
-    }
 }
+
 io.on('connection', (socket) => {
     socket.emit('connection-sucessful', socket.id);     
 
     socket.on('credentials', (credentials) => {
         credentials = JSON.parse(credentials)
+        socket.name = credentials.name;
+        let user = new User(socket, credentials.name,
+            credentials.gender, 
+            credentials.interested, 
+            credentials.image, 
+            credentials.description);
         let availableSlot = findEmptySlot(credentials);
-        availableSlot.addUser(credentials, socket);
+        availableSlot.addUser(user);
     })
 
-    users.push(socket.id);
     socket.on('message', (data) => {
         data = JSON.parse(data);
         data.from = socket.id;
-        pairedUsers.forEach(chatRoom => {
-            for(let user in chatRoom){
-                if (chatRoom[user].socket && chatRoom[user].socket.id == socket.id){
-                    chatRoom.storeMessage(data);
-                    break;
-                }
-            }
-        });
+        socketIdMap[socket.id].storeMessage(data);
     })
     
     socket.on('disconnect', () => {
-        deleteUser(socket);
+        socketIdMap[socket.id].deleteUser(socket.id);
+        delete socketIdMap[socket.id];  
     })  
 })
 
 function findEmptySlot(credentials){
     for(let chatRoom of unpairedUsers){
         for (let user in chatRoom) {
-            if (chatRoom[user] && chatRoom[user].gender && chatRoom[user].gender == credentials.interested) {
+            if (chatRoom[user] && chatRoom[user].gender == credentials.interested) {
                 if (chatRoom[user].interested == credentials.gender){
                     return chatRoom;
                 }
@@ -122,37 +152,12 @@ function findEmptySlot(credentials){
     return new ChatRoom();
 }
 
-function deleteUser(socket){
-        let index;
-        for (let i = 0; i < pairedUsers.length; i++) {
-            if (pairedUsers[i].firstUser.socket.id == socket.id) {
-                index = i;
-                pairedUsers[i].firstUser = pairedUsers[i].secondUser;
-                break;
-            }
-            else if (pairedUsers[i].secondUser.socket.id == socket.id) {
-                index = i;
-                break;
-            }
+function removeFromUsersArray(array, chatRoom){
+    for(let i=0;i<array.length;i++){
+        if(array[i] == chatRoom){
+            array.splice(i, 1);
         }
-        if (index >= 0) {
-        pairedUsers[index].firstUser.socket.emit('partner-information', JSON.stringify({status: false}));
-            pairedUsers[index].secondUser = null;
-            unpairedUsers.push(pairedUsers[index]);
-            pairedUsers.splice(index, 1);
-            return;
-        }
-        for (let i = 0; i < unpairedUsers.length; i++) {
-            if (unpairedUsers[i].firstUser.socket.id == socket.id) {
-                index = i;
-                break;
-            }
-        }
-        if (index >= 0) {
-            unpairedUsers[index].firstUser = null;
-            unpairedUsers.splice(index, 1);
-            return;
-        }
+    }
 }
 
 app.use((req, res) => {

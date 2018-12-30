@@ -59,7 +59,6 @@ export class WebSocketService {
         const now = new Date();
         // console.log(5);
         const message = {
-          from: 'me',
           text: data.trim(),
           date: now.getHours() + ':' + now.getMinutes().toLocaleString('en-US', { minimumIntegerDigits: 2}),
         };
