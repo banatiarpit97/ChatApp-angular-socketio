@@ -4,6 +4,7 @@ import * as io from 'socket.io-client';
 import { Observable } from 'rxjs/Observable';
 // tslint:disable-next-line:import-blacklist
 import * as Rx from 'rxjs/Rx';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +30,7 @@ export class WebSocketService {
   }
 
   connect(): Rx.Subject<MessageEvent> {
-    this.socket = io('/');
+    this.socket = io(environment.apiUrl);
     // console.log(1);
     const observable = new Observable(obs => {
       // console.log(2);

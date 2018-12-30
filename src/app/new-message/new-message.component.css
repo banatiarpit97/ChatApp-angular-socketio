@@ -28,6 +28,8 @@ textarea{
     height: 38px;
     margin-left: 4%;
     margin-top: 2%;
+    background-color: #38c55b;
+
 }
 .msg-card-disabled{
     height: 4% !important;

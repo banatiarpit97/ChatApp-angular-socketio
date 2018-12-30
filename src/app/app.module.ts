@@ -13,6 +13,8 @@ import { MessagesComponent } from './messages/messages.component';
 import { NewMessageComponent } from './new-message/new-message.component';
 import { LoginComponent } from './login/login.component';
 import { MatRadioModule } from '@angular/material/radio';
+import { ConfirmLogoutComponent } from './confirm-logout/confirm-logout.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 
@@ -22,7 +24,8 @@ import { MatRadioModule } from '@angular/material/radio';
     AppComponent,
     MessagesComponent,
     NewMessageComponent,
-    LoginComponent
+    LoginComponent,
+    ConfirmLogoutComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +37,11 @@ import { MatRadioModule } from '@angular/material/radio';
     MatCardModule,
     MatInputModule,
     MatButtonModule,
-    MatRadioModule
+    MatRadioModule,
+    MatDialogModule
+  ],
+  entryComponents: [
+    ConfirmLogoutComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

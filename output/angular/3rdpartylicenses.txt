@@ -955,6 +955,8 @@ MIT
 
 @angular/material/form-field
 
+@angular/material/dialog
+
 zone.js
 MIT
 The MIT License

@@ -1,7 +1,9 @@
-import { Component, OnInit, HostBinding } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { WebSocketService } from '../services/web-socket.service';
 import { Router } from '@angular/router';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { ConfirmLogoutComponent } from './../confirm-logout/confirm-logout.component';
 
 @Component({
   selector: 'app-messages',
@@ -12,7 +14,7 @@ export class MessagesComponent implements OnInit {
   messages = [];
   colors = ['green', '#2255aa', '#d13131', '#c07e1c'];
   randomNumber;
-  constructor(private chat: ChatService, public ws: WebSocketService, private router: Router) {
+  constructor(private chat: ChatService, public ws: WebSocketService, private router: Router, public dialog: MatDialog) {
     console.log(this.randomNumber);
 
   }
@@ -42,15 +44,28 @@ export class MessagesComponent implements OnInit {
     });
   }
 
+  openDialog(): void {
+    const dialogRef = this.dialog.open(ConfirmLogoutComponent, {
+      width: '350px',
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+      if (result) {
+        this.ws.logout();
+        if (this.ws.pairedOnce) {
+          this.messages.push({ from: 'admin', text: 'Your partner disconnected' });
+          this.messages.push({ from: 'admin', text: 'Finding you a new partner...' });
+        } else {
+          this.messages.push({ from: 'admin', text: 'Finding you a suitable partner...' });
+        }
+        this.router.navigate(['/login']);
+      }
+    });
+  }
+
   logout() {
-    this.ws.logout();
-    if (this.ws.pairedOnce) {
-      this.messages.push({ from: 'admin', text: 'Your partner disconnected' });
-      this.messages.push({ from: 'admin', text: 'Finding you a new partner...' });
-    } else {
-      this.messages.push({ from: 'admin', text: 'Finding you a suitable partner...' });
-    }
-    this.router.navigate(['/login']);
+    this.openDialog();
   }
 
 }
