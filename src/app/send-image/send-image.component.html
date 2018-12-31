@@ -1,14 +1,14 @@
-<h2 mat-dialog-title>Select Image</h2>
-<mat-dialog-content>
-  <div class="img-placeholder" style="text-align:center;">
-    <img src="{{send_image}}" (click)="image.click()" style="width:250px;height:250px;">
+<h2 mat-dialog-title *ngIf="send">Select Image</h2>
+<mat-dialog-content style="height:500px">
+  <div class="img-placeholder">
+    <img src="{{image}}" (click)="openInput(imageInput)">
   </div>
-  <input type="file" #image accept="image/*" id="image" (change)="imgUpload($event)">
-  <mat-form-field class="msg-form" style="width:100%;">
-    <textarea mat-autosize matInput placeholder="Your Message" class="msg" [(ngModel)]="send_text"></textarea>
+  <input type="file" #imageInput accept="image/*" id="imageInput" (change)="imgUpload($event)" [hidden]="send">
+  <mat-form-field class="msg-form" *ngIf="send">
+    <textarea mat-autosize matInput placeholder="Your Message" class="msg" [(ngModel)]="text"></textarea>
   </mat-form-field>
 </mat-dialog-content>
-<mat-dialog-actions style="float:right;">
+<mat-dialog-actions>
   <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button style="color:#38c55b" (click)="sendImage()">Send</button>
+  <button mat-button style="color:#38c55b" (click)="sendImage()" *ngIf="send">Send</button>
 </mat-dialog-actions>

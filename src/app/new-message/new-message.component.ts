@@ -26,6 +26,7 @@ export class NewMessageComponent implements OnInit {
   selectImage() {
       const dialogRef = this.dialog.open(SendImageComponent, {
         width: '500px',
+        data: { send: true },
       });
   }
 }

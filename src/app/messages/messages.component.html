@@ -20,7 +20,7 @@
             {{message.from}}
           </mat-card-title>
           <mat-card-content class="msg-text">
-            <img src="{{message.image}}" *ngIf="message.image" style="height:200px;width:200px;margin-bottom: 5px;">
+            <img src="{{message.image}}" *ngIf="message.image" (click)="showImage(message)" style="height:200px;width:200px;margin-bottom: 5px;">
             <p *ngFor="let line of message.text">{{line}}</p>
           </mat-card-content>
           <mat-card-footer class="msg-time">

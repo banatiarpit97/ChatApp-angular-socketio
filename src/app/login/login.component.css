@@ -99,3 +99,15 @@ input[type='file']{
 .description{
     margin-top: 5%;
 }
+
+@media(max-width: 800px){
+    #login-form{
+        width: 90%;
+        height: auto;
+    }
+}
+@media(max-height: 700px){
+    #login-form{
+        height: auto;
+    }
+}

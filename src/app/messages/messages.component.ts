@@ -4,7 +4,7 @@ import { WebSocketService } from '../services/web-socket.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material';
 import { ConfirmLogoutComponent } from './../confirm-logout/confirm-logout.component';
-
+import { SendImageComponent } from './../send-image/send-image.component';
 @Component({
   selector: 'app-messages',
   templateUrl: './messages.component.html',
@@ -65,6 +65,13 @@ export class MessagesComponent implements OnInit {
         }
         this.router.navigate(['/login']);
       }
+    });
+  }
+
+  showImage(msg) {
+    const dialogRef = this.dialog.open(SendImageComponent, {
+      width: '1000px',
+      data: {send: false, message: msg}
     });
   }
 
