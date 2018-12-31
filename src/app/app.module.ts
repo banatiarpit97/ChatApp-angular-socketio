@@ -15,6 +15,7 @@ import { LoginComponent } from './login/login.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { ConfirmLogoutComponent } from './confirm-logout/confirm-logout.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { SendImageComponent } from './send-image/send-image.component';
 
 
 
@@ -25,7 +26,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MessagesComponent,
     NewMessageComponent,
     LoginComponent,
-    ConfirmLogoutComponent
+    ConfirmLogoutComponent,
+    SendImageComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +43,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatDialogModule
   ],
   entryComponents: [
-    ConfirmLogoutComponent
+    ConfirmLogoutComponent,
+    SendImageComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

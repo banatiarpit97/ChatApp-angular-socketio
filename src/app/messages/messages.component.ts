@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { WebSocketService } from '../services/web-socket.service';
 import { Router } from '@angular/router';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { ConfirmLogoutComponent } from './../confirm-logout/confirm-logout.component';
 
 @Component({
@@ -22,7 +22,11 @@ export class MessagesComponent implements OnInit {
   ngOnInit() {
     this.chat.messages.subscribe(msg => {
       // console.log(8);
-      msg.text = msg.text.split('\n');
+      if (msg.text) {
+        msg.text = msg.text.split('\n');
+      } else {
+        msg.text = [];
+      }
       this.messages.push(msg);
       const scrollableArea = document.querySelector('mat-sidenav-content');
       setTimeout(() => {scrollableArea.scrollTop = scrollableArea.scrollHeight; }, 0);

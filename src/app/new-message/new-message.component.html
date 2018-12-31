@@ -1,6 +1,11 @@
 <mat-card class="msg-card" *ngIf="ws.pairingStatus">
   <mat-form-field class="msg-form">
     <textarea mat-autosize matInput placeholder="Your Message" class="msg" [(ngModel)]="message"></textarea>
+    <button mat-button matSuffix mat-icon-button aria-label="Pic" (click)="selectImage()">
+      <i class="material-icons">
+        add_a_photo
+      </i>
+    </button>
   </mat-form-field>
   <button mat-raised-button color="warn" class="msg-button" (click)="sendMessage(message)">SEND</button>
 </mat-card>

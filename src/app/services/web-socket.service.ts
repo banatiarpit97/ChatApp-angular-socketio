@@ -46,7 +46,7 @@ export class WebSocketService {
         obs.next({from: 'admin', text: 'Welcome to Chat App'});
       });
       this.socket.on('message', (data) => {
-        this.chat.push(data);
+        console.log(data);
         // console.log(6);
         obs.next(data);
       });
@@ -90,6 +90,18 @@ export class WebSocketService {
         }
       });
     });
+  }
+
+  sendImage(image, text) {
+    const now = new Date();
+    const message = {
+      date: now.getHours() + ':' + now.getMinutes().toLocaleString('en-US', { minimumIntegerDigits: 2 }),
+      image,
+      text
+    };
+    console.log(message);
+    this.socket.emit('message', JSON.stringify(message));
+
   }
 
   logout() {
